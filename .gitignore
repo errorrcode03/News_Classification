@@ -1,0 +1,30 @@
+# ── Python / Jupyter ──────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.pytest_cache/
+
+# ── Data & Embeddings ─────────────────────
+# We ignore data/ so you don't commit the 822MB GloVe file or large CSVs
+data/
+*.csv
+*.zip
+
+# ── Model Artifacts ───────────────────────
+# Ignore trained weights and large pickle files
+saved_model.pth
+models/*.pkl
+models/config_snapshot.json
+training.log
+
+# (Note: we leave models/*.png out of gitignore so your training curves 
+# and confusion matrix can be uploaded to GitHub for your portfolio!)
+
+# ── OS & Environments ─────────────────────
+.DS_Store
+.env
+.venv/
+env/
+venv/
+ENV/
