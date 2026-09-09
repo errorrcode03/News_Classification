@@ -1,73 +1,57 @@
-# ============================================================
-#  News Category Classification — Central Configuration
-# ============================================================
-
-# ── Paths ────────────────────────────────────────────────────
-paths:
-  data_dir: "data"
-  glove_dir: "data/glove"
-  glove_file: "data/glove/glove.6B.100d.txt"
-  model_save_path: "saved_model.pth"
-  word2idx_path: "models/word2idx.pkl"
-  label_encoder_path: "models/label_encoder.pkl"
-  log_file: "training.log"
-  confusion_matrix_path: "models/confusion_matrix.png"
-
-# ── Dataset ──────────────────────────────────────────────────
+categories:
+  display_order:
+  - Business
+  - Entertainment
+  - Politics
+  - Sports
+  - Technology
+  label_map:
+    business: Business
+    entertainment: Entertainment
+    politics: Politics
+    sport: Sports
+    tech: Technology
 dataset:
-  url: "https://huggingface.co/datasets/SetFit/bbc-news/raw/main/bbc-text.csv"
-  local_path: "data/bbc-text.csv"
-  train_ratio: 0.80
-  val_ratio: 0.10
-  test_ratio: 0.10
+  local_path: data/bbc-text.csv
   random_seed: 42
-
-# ── Text Preprocessing ────────────────────────────────────────
-preprocessing:
-  max_vocab_size: 25000
-  max_seq_len: 512
-  min_word_freq: 2
-
-# ── Embeddings ───────────────────────────────────────────────
+  test_ratio: 0.1
+  train_ratio: 0.8
+  url: https://huggingface.co/datasets/SetFit/bbc-news/raw/main/bbc-text.csv
+  val_ratio: 0.1
 embeddings:
-  glove_url: "https://nlp.stanford.edu/data/glove.6B.zip"
   embed_dim: 100
   fine_tune: true
-
-# ── Model Architecture ────────────────────────────────────────
+  glove_url: https://nlp.stanford.edu/data/glove.6B.zip
 model:
-  embed_dim: 100
-  hidden_size: 128
-  num_layers: 2
   bidirectional: true
   dropout: 0.5
+  embed_dim: 100
   fc_dropout: 0.3
-  num_classes: 5
-
-# ── Training ─────────────────────────────────────────────────
+  hidden_size: 128
+  num_classes: 42
+  num_layers: 2
+paths:
+  confusion_matrix_path: models/confusion_matrix.png
+  data_dir: data
+  dataset_local: data/news_category_dataset.csv
+  glove_dir: data/glove
+  glove_file: data/glove/glove.6B.100d.txt
+  label_encoder_path: models/label_encoder.pkl
+  log_file: training.log
+  model_save_path: saved_model.pth
+  word2idx_path: models/word2idx.pkl
+preprocessing:
+  max_seq_len: 512
+  max_vocab_size: 25000
+  min_word_freq: 2
 training:
-  epochs: 20
   batch_size: 64
-  learning_rate: 0.001
-  weight_decay: 0.0001
-  grad_clip_max_norm: 1.0
   early_stopping_patience: 5
-  scheduler: "cosine"          # cosine | step
-  scheduler_T_max: 20          # for CosineAnnealingLR
-  scheduler_step_size: 5       # for StepLR
-  scheduler_gamma: 0.5         # for StepLR
-
-# ── Category Mapping ─────────────────────────────────────────
-categories:
-  label_map:
-    business: "Business"
-    entertainment: "Entertainment"
-    politics: "Politics"
-    sport: "Sports"
-    tech: "Technology"
-  display_order:
-    - "Business"
-    - "Entertainment"
-    - "Politics"
-    - "Sports"
-    - "Technology"
+  epochs: 20
+  grad_clip_max_norm: 1.0
+  learning_rate: 0.001
+  scheduler: cosine
+  scheduler_T_max: 20
+  scheduler_gamma: 0.5
+  scheduler_step_size: 5
+  weight_decay: 0.0001
